@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国际汉语口语练习平台</title>
+<style>
+  body {
+    font-family: "Microsoft YaHei", sans-serif;
+    margin: 0;
+    background-color: #f7f9fc;
+    color: #333;
+  }
+  .header {
+    background: linear-gradient(90deg, #ff9a6c, #ff5e62);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .nav {
+    background: #3a86ff;
+    padding: 10px;
+    text-align: center;
+  }
+  .nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .btn {
+    display: inline-block;
+    background: #3a86ff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 10px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background: #2a75e6;
+  }
+  .task-item, .class-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+  }
+  .recording-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin: 15px 0;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  .auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  .auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background: #eee;
+    cursor: pointer;
+  }
+  .auth-tab.active {
+    background: #3a86ff;
+    color: white;
+  }
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  .link-box {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  .copy-btn {
+    background: #4CAF50;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  .exam-info {
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 首页 -->
+<div id="home" class="page">
+  <div class="header">国际汉语口语练习平台</div>
+  <div class="nav">
+    <a href="#home">首页</a>
+    <a href="#auth">登录/注册</a>
+    <a href="#teacher">教师后台</a>
+    <a href="#student">学生练习</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>欢迎来到AI驱动的汉语口语练习平台！</h2>
+      <p>支持HSK、IGCSE等国际汉语考试的口语专项练习，提供专业评分标准与反馈。</p>
+      <a class="btn" href="#auth">立即登录/注册</a>
+    </div>
+  </div>
+</div>
+
+<!-- 登录/注册页 -->
+<div id="auth" class="page" style="display:none;">
+  <div class="header">登录/注册</div>
+  <div class="nav">
+    <a href="#home">返回首页</a>
+    <a href="#auth" class="active">登录/注册</a>
+    <a href="#teacher">教师后台</a>
+    <a href="#student">学生练习</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="showTab('login')">登录</div>
+        <div class="auth-tab" onclick="showTab('register')">注册</div>
+      </div>
+      
+      <!-- 登录表单 -->
+      <div id="login" class="tab-content active">
+        <div class="form-group">
+          <label>身份</label>
+          <select id="login-role">
+            <option value="teacher">教师</option>
+            <option value="student">学生</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>邮箱</label>
+          <input type="email" placeholder="请输入邮箱">
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" placeholder="请输入密码">
+        </div>
+        <button class="btn" onclick="goToPage('teacher')">登录</button>
+      </div>
+      
+      <!-- 注册表单 -->
+      <div id="register" class="tab-content">
+        <div class="form-group">
+          <label>身份</label>
+          <select id="register-role">
+            <option value="teacher">教师</option>
+            <option value="student">学生</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>姓名</label>
+          <input type="text" placeholder="请输入姓名">
+        </div>
+        <div class="form-group">
+          <label>邮箱</label>
+          <input type="email" placeholder="请输入邮箱">
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" placeholder="请设置密码">
+        </div>
+        <div class="form-group" id="teacher-info" style="display:none;">
+          <label>教龄</label>
+          <input type="text" placeholder="请输入教龄">
+        </div>
+        <div class="form-group" id="student-info" style="display:none;">
+          <label>学习等级</label>
+          <input type="text" placeholder="请输入汉语水平等级（如HSK3）">
+        </div>
+        <button class="btn" onclick="goToPage('teacher')">注册</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 教师后台 - 班级管理 -->
+<div id="teacher" class="page" style="display:none;">
+  <div class="header">教师后台</div>
+  <div class="nav">
+    <a href="#home">返回首页</a>
+    <a href="#auth">切换账号</a>
+    <a href="#teacher-classes" class="active">班级管理</a>
+    <a href="#teacher-tasks">任务管理</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>班级管理</h2>
+      <button class="btn" onclick="showCreateClass()">创建新班级</button>
+      
+      <div id="create-class-form" style="display:none; margin-top:20px; padding-top:20px; border-top:1px solid #eee;">
+        <div class="form-group">
+          <label>班级名称</label>
+          <input type="text" id="class-name" placeholder="例如：HSK3口语班">
+        </div>
+        <div class="form-group">
+          <label>班级描述</label>
+          <textarea id="class-desc" placeholder="简单描述班级情况（如：针对IGCSE 0523备考）"></textarea>
+        </div>
+        <button class="btn" onclick="createClass()">创建班级</button>
+      </div>
+      
+      <div style="margin-top:20px;">
+        <h3>我的班级</h3>
+        <div id="classes-list">
+          <div class="class-item">
+            <div>
+              <strong>HSK2秋季班</strong>
+              <p>班级码: HSK2023</p>
+              <p>学生数量: 15人</p>
+            </div>
+            <div>
+              <button class="btn" onclick="goToClassTasks('1')">管理任务</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 教师后台 - 任务管理 -->
+<div id="teacher-tasks" class="page" style="display:none;">
+  <div class="header">教师后台 > 任务管理</div>
+  <div class="nav">
+    <a href="#home">返回首页</a>
+    <a href="#auth">切换账号</a>
+    <a href="#teacher-classes">班级管理</a>
+    <a href="#teacher-tasks" class="active">任务管理</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>当前班级: HSK2秋季班</h2>
+      <button class="btn" onclick="showCreateTask()">创建新任务</button>
+      
+      <div id="create-task-form" style="display:none; margin-top:20px; padding-top:20px; border-top:1px solid #eee;">
+        <div class="form-group">
+          <label>考试类型</label>
+          <select id="exam-type" onchange="updateExamTemplate()">
+            <option value="">请选择考试类型</option>
+            <option value="hsk-basic">HSK 初级（1-3级）</option>
+            <option value="hsk-intermediate">HSK 中级（4-5级）</option>
+            <option value="hsk-advanced">HSK 高级（6级）</option>
+            <option value="igcse-0523">IGCSE 外语水平（0523）</option>
+            <option value="igcse-9547">IGCSE 二语水平（9547）</option>
+          </select>
+        </div>
+        
+        <div class="exam-info" id="exam-info">
+          选择考试类型后显示对应说明
+        </div>
+        
+        <div class="form-group">
+          <label>任务主题</label>
+          <input type="text" id="task-title" placeholder="例如：我的家庭">
+        </div>
+        <div class="form-group">
+          <label>提示问题（自动匹配考试题型）</label>
+          <textarea id="task-questions" rows="5" placeholder="每行一个问题"></textarea>
+        </div>
+        <div class="form-group">
+          <label>评分标准（自动匹配考试标准）</label>
+          <textarea id="task-criteria" rows="5" placeholder="描述评分标准"></textarea>
+        </div>
+        <button class="btn" onclick="createTask()">创建任务</button>
+      </div>
+      
+      <div style="margin-top:20px;">
+        <h3>任务列表</h3>
+        <div id="tasks-list">
+          <div class="task-item">
+            <div>
+              <strong>1. 我的家庭（HSK初级）</strong>
+              <div class="link-box">
+                任务链接: <input type="text" value="http://hanyu-practice.com/task/7a3b" readonly>
+                <button class="btn copy-btn" onclick="copyLink(this)">复制</button>
+              </div>
+            </div>
+            <div>
+              <button class="btn">查看结果</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 学生练习页 -->
+<div id="student" class="page" style="display:none;">
+  <div class="header">学生中心</div>
+  <div class="nav">
+    <a href="#home">返回首页</a>
+    <a href="#auth">切换账号</a>
+    <a href="#student-classes">我的班级</a>
+    <a href="#student-tasks" class="active">我的任务</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>加入班级</h2>
+      <div class="form-group">
+        <label>班级码</label>
+        <input type="text" placeholder="输入老师提供的班级码">
+      </div>
+      <button class="btn">加入班级</button>
+      
+      <h3 style="margin-top:30px;">我的班级</h3>
+      <div class="class-item">
+        <div>
+          <strong>HSK2秋季班</strong>
+          <p>老师: 王老师</p>
+        </div>
+        <div>
+          <button class="btn" onclick="goToPage('student-tasks')">查看任务</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 学生任务练习页 -->
+<div id="student-tasks" class="page" style="display:none;">
+  <div class="header">学生练习 > 我的任务</div>
+  <div class="nav">
+    <a href="#home">返回首页</a>
+    <a href="#auth">切换账号</a>
+    <a href="#student-classes">我的班级</a>
+    <a href="#student-tasks" class="active">我的任务</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>任务：我的家庭（HSK初级）</h2>
+      <p>来自：HSK2秋季班 - 王老师</p>
+      
+      <h3>提示问题：</h3>
+      <p>1. 你家有几口人？</p>
+      <p>2. 你的家人都从事什么工作？</p>
+      <p>3. 你和家人经常一起做什么？</p>
+      
+      <div class="recording-area">
+        <p>录音区</p>
+        <button>🎤 开始录音</button>
+        <button>▶️ 播放</button>
+        <button>🔄 重录</button>
+      </div>
+      
+      <textarea rows="5" cols="50" placeholder="如果无法录音，可以在这里输入文字..."></textarea>
+      <br>
+      <button class="btn" onclick="showFeedback()">提交练习</button>
+    </div>
+  </div>
+</div>
+
+<!-- 反馈结果页 -->
+<div id="feedback" class="page" style="display:none;">
+  <div class="header">练习反馈</div>
+  <div class="nav">
+    <a href="#home">返回首页</a>
+    <a href="#student-tasks">返回任务</a>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>任务：我的家庭（HSK初级）</h2>
+      <p>总体评分：85/100</p>
+      
+      <div style="margin:20px 0;">
+        <div>发音：18/20</div>
+        <div>流利度：25/30</div>
+        <div>词汇：22/25</div>
+        <div>内容：20/25</div>
+      </div>
+      
+      <div style="margin:15px 0;">
+        <h3>优点：</h3>
+        <p>1. 发音准确，语调自然</p>
+        <p>2. 能结合具体例子说明家庭情况</p>
+      </div>
+      
+      <div style="margin:15px 0;">
+        <h3>改进建议：</h3>
+        <p>1. 注意"工作"的声调，应该是第四声</p>
+        <p>2. 可以使用更多描述家庭关系的词汇，如"亲密"、"和睦"</p>
+      </div>
+      
+      <button class="btn" onclick="goToPage('student-tasks')">返回任务列表</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 考试模板数据（题目和评分标准）
+  const examTemplates = {
+    "hsk-basic": {
+      info: "HSK初级（1-3级）：侧重日常交际，要求能简单描述个人情况、家庭、爱好等，词汇量约300-600个。",
+      questions: "1. 你叫什么名字？来自哪里？\n2. 你每天都做什么？\n3. 你喜欢什么运动？为什么？",
+      criteria: "1. 发音（30分）：声母、韵母、声调基本正确\n2. 词汇（25分）：使用初级常用词汇，基本无错误\n3. 语法（25分）：掌握简单句型（主谓宾、"是"字句等）\n4. 流利度（20分）：能连贯表达，停顿合理"
+    },
+    "hsk-intermediate": {
+      info: "HSK中级（4-5级）：要求能讨论工作、学习、社会话题等，词汇量约1200-2500个，能使用复杂句型。",
+      questions: "1. 你认为现在的年轻人为什么喜欢使用手机？\n2. 你家乡的气候有什么特点？\n3. 你觉得学习汉语最难的地方是什么？",
+      criteria: "1. 发音（25分）：发音准确，语调自然\n2. 词汇（25分）：词汇丰富，能使用固定搭配\n3. 语法（25分）：掌握复杂句型，错误较少\n4. 内容（25分）：观点清晰，有逻辑性"
+    },
+    "hsk-advanced": {
+      info: "HSK高级（6级）：要求能深入讨论社会、文化、经济等话题，词汇量3000以上，表达流畅且有深度。",
+      questions: "1. 你如何看待中国的传统文化与现代社会的关系？\n2. 科技发展对人们生活的影响有哪些？\n3. 你认为环境保护与经济发展哪个更重要？为什么？",
+      criteria: "1. 发音（20分）：发音标准，语调得体\n2. 词汇（20分）：词汇丰富多样，准确运用书面语\n3. 语法（20分）：语法正确，句式灵活\n4. 内容（20分）：观点深刻，论证充分\n5. 逻辑（20分）：条理清晰，衔接自然"
+    },
+    "igcse-0523": {
+      info: "IGCSE中文（0523）：外语水平考试，侧重听说读写综合能力，口语要求能进行日常对话及话题讨论。",
+      questions: "1. Describe your favorite festival and why you like it.\n2. What do you think is the most important quality for a friend?\n3. How has technology changed the way people communicate?",
+      criteria: "1. Communication (30%)：能有效传达信息，回应恰当\n2. Vocabulary and grammar (30%)：词汇丰富，语法准确\n3. Pronunciation and intonation (20%)：发音清晰，语调自然\n4. Fluency and coherence (20%)：表达流畅，逻辑连贯"
+    },
+    "igcse-9547": {
+      info: "IGCSE中文（9547）：第二语言水平考试，难度低于0523，侧重日常交流能力，话题贴近生活。",
+      questions: "1. 你的学校生活怎么样？\n2. 你周末通常做什么？\n3. 你喜欢和朋友一起做什么活动？",
+      criteria: "1. 表达能力（40%）：能清楚表达基本信息\n2. 词汇语法（30%）：使用常用词汇和简单语法\n3. 发音流利度（30%）：发音可理解，表达基本流畅"
+    }
+  };
+
+  // 页面切换功能
+  function goToPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.style.display = 'none';
+    });
+    document.getElementById(pageId).style.display = 'block';
+  }
+  
+  // 登录/注册标签切换
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.getElementById(tabId).classList.add('active');
+    document.querySelector(`.auth-tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+    
+    // 显示不同角色的额外信息
+    if (tabId === 'register') {
+      document.getElementById('register-role').addEventListener('change', function() {
+        if (this.value === 'teacher') {
+          document.getElementById('teacher-info').style.display = 'block';
+          document.getElementById('student-info').style.display = 'none';
+        } else {
+          document.getElementById('teacher-info').style.display = 'none';
+          document.getElementById('student-info').style.display = 'block';
+        }
+      });
+    }
+  }
+  
+  // 根据选择的考试类型更新模板
+  function updateExamTemplate() {
+    const examType = document.getElementById('exam-type').value;
+    const infoBox = document.getElementById('exam-info');
+    const questionsBox = document.getElementById('task-questions');
+    const criteriaBox = document.getElementById('task-criteria');
+    
+    if (examType && examTemplates[examType]) {
+      infoBox.innerHTML = examTemplates[examType].info;
+      questionsBox.value = examTemplates[examType].questions;
+      criteriaBox.value = examTemplates[examType].criteria;
+    } else {
+      infoBox.innerHTML = "选择考试类型后显示对应说明";
+      questionsBox.value = "";
+      criteriaBox.value = "";
+    }
+  }
+  
+  // 显示创建班级表单
+  function showCreateClass() {
+    document.getElementById('create-class-form').style.display = 'block';
+  }
+  
+  // 创建班级
+  function createClass() {
+    const className = document.getElementById('class-name').value;
+    if (!className) {
+      alert('请输入班级名称');
+      return;
+    }
+    
+    // 生成随机班级码
+    const classCode = 'HSK' + Math.floor(1000 + Math.random() * 9000);
+    
+    // 添加到班级列表
+    const classesList = document.getElementById('classes-list');
+    const newClass = document.createElement('div');
+    newClass.className = 'class-item';
+    newClass.innerHTML = `
+      <div>
+        <strong>${className}</strong>
+        <p>班级码: ${classCode}</p>
+        <p>学生数量: 0人</p>
+      </div>
+      <div>
+        <button class="btn" onclick="goToClassTasks('${Date.now()}')">管理任务</button>
+      </div>
+    `;
+    classesList.appendChild(newClass);
+    
+    // 重置表单并隐藏
+    document.getElementById('class-name').value = '';
+    document.getElementById('class-desc').value = '';
+    document.getElementById('create-class-form').style.display = 'none';
+    
+    alert(`班级创建成功！班级码：${classCode}`);
+  }
+  
+  // 进入班级任务管理
+  function goToClassTasks(classId) {
+    goToPage('teacher-tasks');
+  }
+  
+  // 显示创建任务表单
+  function showCreateTask() {
+    document.getElementById('create-task-form').style.display = 'block';
+  }
+  
+  // 创建任务
+  function createTask() {
+    const examType = document.getElementById('exam-type').value;
+    const taskTitle = document.getElementById('task-title').value;
+    
+    if (!examType) {
+      alert('请选择考试类型');
+      return;
+    }
+    if (!taskTitle) {
+      alert('请输入任务主题');
+      return;
+    }
+    
+    // 获取考试类型文本（用于显示）
+    const examTypeText = document.getElementById('exam-type').options[document.getElementById('exam-type').selectedIndex].text;
+    
+    // 生成随机任务ID和链接
+    const taskId = Math.random().toString(36).substring(2, 8);
+    const taskLink = `http://hanyu-practice.com/task/${taskId}`;
+    
+    // 添加到任务列表
+    const tasksList = document.getElementById('tasks-list');
+    const newTask = document.createElement('div');
+    newTask.className = 'task-item';
+    newTask.innerHTML = `
+      <div>
+        <strong>${tasksList.children.length + 1}. ${taskTitle}（${examTypeText}）</strong>
+        <div class="link-box">
+          任务链接: <input type="text" value="${taskLink}" readonly>
+          <button class="btn copy-btn" onclick="copyLink(this)">复制</button>
+        </div>
+      </div>
+      <div>
+        <button class="btn">查看结果</button>
+      </div>
+    `;
+    tasksList.appendChild(newTask);
+    
+    // 重置表单并隐藏
+    document.getElementById('exam-type').value = '';
+    document.getElementById('task-title').value = '';
+    document.getElementById('task-questions').value = '';
+    document.getElementById('task-criteria').value = '';
+    document.getElementById('exam-info').innerHTML = "选择考试类型后显示对应说明";
+    document.getElementById('create-task-form').style.display = 'none';
+    
+    alert('任务创建成功！链接已生成，可以复制发送给学生');
+  }
+  
+  // 复制链接功能
+  function copyLink(button) {
+    const input = button.previousElementSibling;
+    input.select();
+    document.execCommand('copy');
+    alert('链接已复制！');
+  }
+  
+  // 显示反馈页面
+  function showFeedback() {
+    goToPage('feedback');
+  }
+  
+  // 导航链接点击事件
+  document.querySelectorAll('.nav a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      goToPage(targetId);
+    });
+  });
+</script>
+
+</body>
+</html>
